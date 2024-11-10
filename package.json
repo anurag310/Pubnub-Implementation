@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@pubnub/chat": "^0.8.2",
     "cors": "^2.8.5",
     "express": "^4.21.1",
-    "pubnub": "^8.2.10"
+    "pubnub": "^8.2.10",
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
