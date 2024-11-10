@@ -20,7 +20,7 @@ class PubNubService {
         return await pubnub.channelMetadata({
             channel: channelName,
         });
-    }
+         }
     
     catch(error){
         throw new Error(`Failed to set Channel metadata: ${error.message}`);
@@ -84,12 +84,6 @@ class PubNubService {
             },
         });
       
-        // // Send a welcome message to the channel
-        // await pubnub.publish({
-        //   channel: channel,
-        //   message: { text: `Welcome ${username1} and ${username2}!`, sender: 'system' },
-        // });
-      
         return subscription;
       };
 
@@ -120,6 +114,20 @@ class PubNubService {
             });
             return result;
           }
+
+          static async inviteUsertoOneToOneConvo(channelId,userId){
+            return await pubnub.channel({
+                channel: channelId,
+                uuids: [{ id: userId }],
+              });
+          }
+          static async getChannelMember(channelId,userId){
+            return await pubnub.objects.getChannelMembers({
+                channel: channelId
+                
+              });
+          }
 }
+
 
 module.exports = PubNubService;

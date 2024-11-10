@@ -123,5 +123,40 @@ const startConvo = async (req, res) => {
     }
     catch(error){ res.status(500).json({ error: error.message });}
   }
+  const getChannelMember=async (req,res)=>{
+    try{
+        const {channel} = req.body;
+        var result = await PubNubService.getChannelMember(channel);
+        res.status(200).json(result);
+    }
+    catch(error){ res.status(500).json({ error: error.message });}
+  }
+  const inviteUser = async (req, res) => {
+    const { userId, channelId } = req.body;
+  
+    if (!userId || !channelId) {
+      return res.status(400).json({ error: 'Both userId and channelId are required' });
+    }
+  
+    try {
+      // Fetch the user by UUID (if needed to validate)
+     // const user = await pubnub.objects.getUUIDMetadata({ uuid: userId });
+     const user = await PubNubService.getUUIDMetadata(userId);
+      if (!user) {
+        return res.status(404).json({ error: `User with ID ${userId} not found` });
+      }
+  
+      // Add the user to the channel as a member (inviting them)
+      const result = await PubNubService.inviteUsertoOneToOneConvo(channelId,user.data.id);
+  
+      res.json({
+        message: `User ${userId} invited to join channel ${channelId}`,
+        result,
+      });
+    } catch (error) {
+      console.error('Error inviting user to channel:', error);
+      res.status(500).json({ error: 'Failed to invite user to channel' });
+    }
 
-module.exports = {fetchMessage, getChannelOccupancy,publishMessage, subscribeToChannel,setUUIDMetadata,getUUIDMetadata,oneToOneSendMssg,getChannelMetadata,startConvo};
+  }
+module.exports = {getChannelMember,inviteUser,fetchMessage, getChannelOccupancy,publishMessage, subscribeToChannel,setUUIDMetadata,getUUIDMetadata,oneToOneSendMssg,getChannelMetadata,startConvo};
