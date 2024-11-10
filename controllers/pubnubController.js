@@ -112,7 +112,16 @@ const startConvo = async (req, res) => {
         const {channel} = req.body;
         var result = await PubNubService.getChannelOccupancy(channel);
         res.status(200).json(result);
-    }catch(error){ res.status(500).json({ error: error.message });}
+    }
+    catch(error){ res.status(500).json({ error: error.message });}
+  }
+  const fetchMessage = async (req,res)=>{
+    try{
+        const {channel} = req.body;
+        var result = await PubNubService.fetchMesssage(channel);
+        res.status(200).json(result);
+    }
+    catch(error){ res.status(500).json({ error: error.message });}
   }
 
-module.exports = { getChannelOccupancy,publishMessage, subscribeToChannel,setUUIDMetadata,getUUIDMetadata,oneToOneSendMssg,getChannelMetadata,startConvo};
+module.exports = {fetchMessage, getChannelOccupancy,publishMessage, subscribeToChannel,setUUIDMetadata,getUUIDMetadata,oneToOneSendMssg,getChannelMetadata,startConvo};

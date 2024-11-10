@@ -112,6 +112,14 @@ class PubNubService {
             
             return result.channels[channel] ? result.channels[channel].occupants : [];
           }
+
+          static async fetchMesssage(channel){
+            const result = await pubnub.fetchMessages({
+                channels: [channel],
+                count:1000
+            });
+            return result;
+          }
 }
 
 module.exports = PubNubService;
